@@ -1,0 +1,145 @@
+/* Estilos generales limpios */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #39A900; /* Verde institucional SENA */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header p {
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+header h1 {
+    margin: 5px 0 0 0;
+    font-size: 28px;
+}
+
+main {
+    max-width: 1000px;
+    margin: 30px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Barra de herramientas (Buscador y botón crear) */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.toolbar form {
+    display: flex;
+    gap: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="search"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="search"]:focus {
+    border-color: #39A900;
+}
+
+/* Botones */
+button, .btn, a.btn {
+    background-color: #39A900;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+button:hover, .btn:hover, a.btn:hover {
+    background-color: #2d8600;
+}
+
+/* Enlaces de acciones en la tabla */
+table a {
+    color: #0056b3;
+    text-decoration: none;
+    margin-right: 8px;
+}
+
+table a:hover {
+    text-decoration: underline;
+}
+
+/* Tablas */
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+table th {
+    background-color: #e9ecef;
+    color: #495057;
+    font-weight: 600;
+}
+
+table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.empty {
+    text-align: center;
+    color: #6c757d;
+    padding: 20px;
+}
+
+/* Formularios de Crear y Editar */
+form div {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+form input[type="text"],
+form input[type="email"] {
+    width: 100%;
+    box-sizing: border-box;
+}

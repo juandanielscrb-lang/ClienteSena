@@ -1,28 +1,29 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aprendices</title>
-</head>
-<body>
-    <header>
-        <p>GESTION</p>
-        <h1>Aprendices</h1>
-    </header>
-    <main>
-        <div class="toolbar">
-            <p>{{ count($apprentices) }} registro(s)</p>
-            <form action="{{ route('apprentices.index') }}" method="GET">
-                <input type="search" name="search" value="{{ request('search') }}" placeholder="Buscar nombre, correo o celular" aria-label="Buscar aprendices">
-                <button type="submit">Buscar</button>
-                @if(request('search'))
-                    <a class="clear" href="{{ route('apprentices.index') }}">Limpiar</a>
-                @endif
-            </form>
-        </div>
-        <div class="table-wrap">
-            <table>
+@extends('layouts.app')
+
+@section('content')
+    <!-- Todo el contenido de tu tabla y buscador va aquí adentro -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Aprendices</h2>
+        <a href="{{ route('apprentices.create') }}" class="btn btn-success">Crear Nuevo Aprendiz</a>
+    </div>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    <div class="card shadow-sm p-3">
+        <p>{{ count($apprentices) }} registro(s)</p>
+
+        <form action="{{ route('apprentices.index') }}" method="GET" class="input-group mb-3">
+            <input type="search" name="search" value="{{ request('search') }}" class="form-control" placeholder="Buscar nombre, correo o celular">
+            <button type="submit" class="btn btn-outline-success">Buscar</button>
+            @if(request('search'))
+                <a href="{{ route('apprentices.index') }}" class="btn btn-outline-secondary">Limpiar</a>
+            @endif
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -31,6 +32,7 @@
                         <th>Celular</th>
                         <th>Curso</th>
                         <th>Computador</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,17 +44,25 @@
                             <td>{{ data_get($apprentice, 'cell_number', '-') }}</td>
                             <td>{{ data_get($apprentice, 'course.course_number', 'Sin curso') }}</td>
                             <td>{{ data_get($apprentice, 'computer.number', 'Sin computador') }}</td>
+                            <td>
+                                <a href="{{ route('apprentices.show', data_get($apprentice, 'id')) }}" class="btn btn-sm btn-info text-white">Ver</a>
+                                <a href="{{ route('apprentices.edit', data_get($apprentice, 'id')) }}" class="btn btn-sm btn-warning">Editar</a>
+                                <form action="{{ route('apprentices.destroy', data_get($apprentice, 'id')) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar registro?')">Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td class="empty" colspan="6">
-                                {{ request('search') ? 'No se encontraron aprendices con esa busqueda.' : 'No hay aprendices registrados.' }}
+                            <td colspan="7" class="text-center text-muted py-4">
+                                {{ request('search') ? 'No se encontraron resultados.' : 'No hay registros.' }}
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-    </main>
-</body>
-</html>
+    </div>
+@endsection

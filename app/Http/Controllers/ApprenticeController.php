@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class ApprenticeController extends Controller
@@ -38,14 +39,67 @@ class ApprenticeController extends Controller
         return view('apprentices.index', compact('apprentices'));
     }
 
+    public function create()
+    {
+        return view('apprentices.create');
+    }
+
+    public function store(Request $request)
+    {
+        $url = env('URL_SERVER_API');
+
+        $response = Http::acceptJson()->post(rtrim($url, '/') . '/apprentices', $request->all());
+
+        if ($response->successful()) {
+            return redirect()->route('apprentices.index')->with('success', 'Aprendiz creado exitosamente.');
+        }
+
+        return back()->withErrors($response->json('errors') ?? ['error' => 'No se pudo crear el aprendiz.'])->withInput();
+    }
+
     public function show($id)
     {
         $url = env('URL_SERVER_API');
 
-        $apprentice = $this->fetchDataFromApi(
-            $url . '/apprentices/' . $id
-        );
+        $apprentice = $this->fetchDataFromApi(rtrim($url, '/') . '/apprentices/' . $id);
+        $apprentice = data_get($apprentice, 'data', $apprentice);
 
         return view('apprentices.show', compact('apprentice'));
+    }
+
+    public function edit($id)
+    {
+        $url = env('URL_SERVER_API');
+
+        $apprentice = $this->fetchDataFromApi(rtrim($url, '/') . '/apprentices/' . $id);
+        $apprentice = data_get($apprentice, 'data', $apprentice);
+
+        return view('apprentices.edit', compact('apprentice'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $url = env('URL_SERVER_API');
+
+        $response = Http::acceptJson()->put(rtrim($url, '/') . '/apprentices/' . $id, $request->all());
+
+        if ($response->successful()) {
+            return redirect()->route('apprentices.index')->with('success', 'Aprendiz actualizado exitosamente.');
+        }
+
+        return back()->withErrors($response->json('errors') ?? ['error' => 'No se pudo actualizar el aprendiz.'])->withInput();
+    }
+
+    public function destroy($id)
+    {
+        $url = env('URL_SERVER_API');
+
+        $response = Http::acceptJson()->delete(rtrim($url, '/') . '/apprentices/' . $id);
+
+        if ($response->successful()) {
+            return redirect()->route('apprentices.index')->with('success', 'Aprendiz eliminado exitosamente.');
+        }
+
+        return redirect()->route('apprentices.index')->with('error', 'No se pudo eliminar el aprendiz.');
     }
 }
